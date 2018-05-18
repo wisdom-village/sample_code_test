@@ -1,0 +1,69 @@
+<html>
+<head>
+
+<script src="js/jquery.min.js"></script>
+<script language="JavaScript">
+
+// function to calculate local time
+// in a different city
+// given the city's UTC offset
+function calcTime(city, offset) {
+
+    // create Date object for current location
+    d = new Date();
+    var timeZoneOffset = new Date().getTimezoneOffset();
+
+    // convert to msec
+    // add local time zone offset 
+    // get UTC time in msec
+    utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+    
+    // create new Date object for different city
+    // using supplied offset
+    nd = new Date(utc + (3600000*offset));
+    
+    // return time as a string
+    return "The local time in " + city + " is " + nd.toLocaleString();
+
+}
+
+    function getTimeZone(){
+        var apiURL = "https://timezoneapi.io/api/ip";
+        // Get JSON object
+        $.getJSON(apiURL, function(data){
+
+            // Request OK?
+            // if(data.meta.code == '200'){
+            //  // Log
+            //  console.log(data);
+
+            //  // Example: Get the city parameter
+            //  // var city = data.data.city;
+
+            //  // Example: Get the users time
+            //  var date = data.data.datetime.date_time_txt;
+            // }
+        }).done(function( data ) {
+            var date = data.data.datetime.date_time_txt;
+            return date; 
+        });
+    }
+
+// get Bombay time
+alert(calcTime('Bombay', '+5.5'));
+
+// get Singapore time
+alert(calcTime('Singapore', '+8'));
+
+// get London time
+alert(calcTime('London', '+1'));
+
+// get Japan time
+alert(calcTime('Japan', '+9'));
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
