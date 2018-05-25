@@ -1,31 +1,48 @@
+<!DOCTYPE html>
 <html>
 <head>
-
-<script src="js/jquery.min.js"></script>
-<script language="JavaScript">
-
-// function to calculate local time
-// in a different city
-// given the city's UTC offset
-function calcTime(city, offset) {
-
-    // create Date object for current location
-    d = new Date();
-    var timeZoneOffset = new Date().getTimezoneOffset();
-
-    // convert to msec
-    // add local time zone offset 
-    // get UTC time in msec
-    utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+</head>
+<body>
+<script src="tz-lookup/tz.js"></script>
+<script src="ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" >
     
-    // create new Date object for different city
-    // using supplied offset
-    nd = new Date(utc + (3600000*offset));
-    
-    // return time as a string
-    return "The local time in " + city + " is " + nd.toLocaleString();
+    function getStart(){
+        // get Bombay time
+        document.getElementById("js-bombay").innerHTML = calcTime('Bombay', '+5.5');
 
-}
+        // get Singapore time
+        document.getElementById("js-singapore").innerHTML = calcTime('Singapore', '+8');
+
+        // get London time
+        document.getElementById("js-london").innerHTML = calcTime('London', '+1');
+
+        // get Japan time
+        document.getElementById("js-japan").innerHTML = calcTime('Japan', '+9');
+    }
+
+    // function to calculate local time
+    // in a different city
+    // given the city's UTC offset
+    function calcTime(city, offset) {
+
+        // create Date object for current location
+        d = new Date();
+        var timeZoneOffset = new Date().getTimezoneOffset();
+
+        // convert to msec
+        // add local time zone offset 
+        // get UTC time in msec
+        utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        
+        // create new Date object for different city
+        // using supplied offset
+        nd = new Date(utc + (3600000*offset));
+        
+        // return time as a string
+        return "The local time in " + city + " is " + nd.toLocaleString();
+
+    }
 
     function getTimeZone(){
         var apiURL = "https://timezoneapi.io/api/ip";
@@ -42,28 +59,21 @@ function calcTime(city, offset) {
 
             //  // Example: Get the users time
             //  var date = data.data.datetime.date_time_txt;
-            // }
+        // }
         }).done(function( data ) {
-            var date = data.data.datetime.date_time_txt;
+                var date = data.data.datetime.date_time_txt;
             return date; 
         });
     }
 
-// get Bombay time
-alert(calcTime('Bombay', '+5.5'));
-
-// get Singapore time
-alert(calcTime('Singapore', '+8'));
-
-// get London time
-alert(calcTime('London', '+1'));
-
-// get Japan time
-alert(calcTime('Japan', '+9'));
-
 </script>
-</head>
-<body>
+<p id="demo" onclick="getStart()">Click me to change my HTML content (innerHTML).</p>
 
+<div class="show_time">
+    <div class="bombay" id="js-bombay">hello</div>
+    <div class="singapore" id="js-singapore" ></div>
+    <div class="london" id="js-london"></div>
+    <div class="japan" id="js-japan"></div>
+</div>
 </body>
 </html>
